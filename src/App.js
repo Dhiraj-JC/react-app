@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import AddProduct from './AddProduct';
+import ProductList from './ProductList';
+import {useState} from 'react';
 
 function App() {
+
+  const [products, setProduct] = useState([]);
+
+  function UpdateProductList(product) {
+    setProduct(products.concat(product));
+  }
+
+  function DeleteProduct(product) {
+    const productIndex = products.findIndex((prod)=>prod.id === product.id);
+    if(productIndex >= 0) {
+      products.splice(productIndex,1);
+    }
+    setProduct([...products]);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <AddProduct updateProductHandler={UpdateProductList} />
+      <ProductList products={products} deleteProductHandler={DeleteProduct}/>
+    </>
   );
 }
 
